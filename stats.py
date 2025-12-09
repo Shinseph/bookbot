@@ -1,19 +1,28 @@
 def get_num_words(book_path: str) -> int:
     with open(book_path) as f:
         text = f.read()
-    words = text.split()
-    return len(words)
+    return len(text.split())
 
 
 def character_count(book_path: str) -> dict[str, int]:
     with open(book_path) as f:
         text = f.read()
-
+    
     count_dict = {}
     for char in text.lower():
-        if char in count_dict:
-            count_dict[char] += 1
-        else:
-            count_dict[char] = 1
+        count_dict[char] = count_dict.get(char, 0) + 1
+    
+    return count_dict
 
-    return dict(sorted(count_dict.items()))
+def get_count(item):
+    return item["num"]
+
+def sort_character_dict(char_dict: dict[str, int]) -> list[dict[str, str | int]]:
+    char_list = []
+    for char, count in char_dict.items():
+        if char.isalpha():  
+            char_list.append({"char": char, "num": count})
+
+    char_list.sort(key=get_count, reverse=True)
+    
+    return char_list
